@@ -14,5 +14,5 @@ public interface BirthdayCouponService {
      * 월별 생일자에게 생일 쿠폰을 발급하는 메서드.
      * 현재 월에 해당하는 모든 생일자를 조회하여 쿠폰을 발급하는 작업을 수행합니다.
      */
-    void issueBirthdayCouponsForMonth();
+    long issueBirthdayCoupon();
 }

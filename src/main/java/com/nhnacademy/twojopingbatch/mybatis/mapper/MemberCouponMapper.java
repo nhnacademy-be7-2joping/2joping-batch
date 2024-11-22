@@ -2,6 +2,7 @@ package com.nhnacademy.twojopingbatch.mybatis.mapper;
 
 import com.nhnacademy.twojopingbatch.mybatis.dto.MemberCouponDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,6 +23,6 @@ public interface MemberCouponMapper {
      *
      * @param memberCouponDtos 삽입할 회원 쿠폰 발급 정보 리스트
      */
-    void insertMemberCoupons(List<MemberCouponDto> memberCouponDtos);
+    void insertMemberCoupons(@Param("list") List<MemberCouponDto> memberCouponDtos);
 
 }

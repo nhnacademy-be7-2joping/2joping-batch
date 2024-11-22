@@ -48,8 +48,9 @@ public class BatchSchedulerService {
     @Transactional
     public void scheduleBirthdayCouponIssue() {
 
-        birthdayCouponService.issueBirthdayCouponsForMonth();
+        long couponId = birthdayCouponService.issueBirthdayCoupon();
         log.info(LocalDate.now().getMonthValue() + "월 생일 쿠폰 발급이 성공적으로 완료되었습니다.");
+
 
     }
 

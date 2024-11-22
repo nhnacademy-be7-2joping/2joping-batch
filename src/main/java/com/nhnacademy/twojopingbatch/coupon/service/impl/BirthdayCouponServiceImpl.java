@@ -6,8 +6,6 @@ import com.nhnacademy.twojopingbatch.coupon.enums.CouponPolicyType;
 import com.nhnacademy.twojopingbatch.coupon.repository.coupon.CouponRepository;
 import com.nhnacademy.twojopingbatch.coupon.repository.policy.CouponPolicyRepository;
 import com.nhnacademy.twojopingbatch.coupon.service.BirthdayCouponService;
-import com.nhnacademy.twojopingbatch.member.repository.MemberRepository;
-import com.nhnacademy.twojopingbatch.mybatis.dto.MemberCouponDto;
 import com.nhnacademy.twojopingbatch.mybatis.mapper.MemberCouponMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +23,6 @@ import java.util.List;
  *
  * @see BirthdayCouponService
  * @see CouponPolicy
- * @see MemberRepository
  * @see CouponRepository
  * @see MemberCouponMapper
  * @since 1.0
@@ -35,7 +32,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BirthdayCouponServiceImpl implements BirthdayCouponService {
 
-    private final MemberRepository memberRepository;
     private final CouponPolicyRepository couponPolicyRepository;
     private final CouponRepository couponRepository;
     private final MemberCouponMapper memberCouponMapper;
@@ -49,7 +45,7 @@ public class BirthdayCouponServiceImpl implements BirthdayCouponService {
      */
     @Override
     @Transactional
-    public void issueBirthdayCouponsForMonth() {
+    public long issueBirthdayCoupon() {
 
         LocalDate today = LocalDate.now();
         YearMonth currentYearMonth = YearMonth.from(today);
@@ -59,36 +55,23 @@ public class BirthdayCouponServiceImpl implements BirthdayCouponService {
         CouponPolicy birthdayPolicy = couponPolicyRepository.findByType(CouponPolicyType.BIRTHDAY)
                 .orElseThrow(() -> new IllegalStateException("Birthday coupon policy not found"));
 
-        List<Long> memberList = memberRepository.findMemberIdsByBirthMonth(month);
 
         String couponName = month + "월 생일 쿠폰";
         long couponId;
         boolean isCouponExist = couponRepository.existsByName(couponName);
 
         if(!isCouponExist) {
-            Coupon initCoupon = new Coupon(null, couponName, today, lastDayOfMonth, memberList.size(), null);
-            initCoupon.setCouponPolicy(birthdayPolicy);
+
+            Coupon initCoupon = new Coupon(null, couponName, today, lastDayOfMonth, null, birthdayPolicy);
 
             couponId = couponRepository.save(initCoupon).getId();
+
         } else {
+
             couponId = couponRepository.findIdByName(couponName);
+
         }
-
-        List<MemberCouponDto> memberCoupons = new ArrayList<>();
-        for (Long memberId : memberList) {
-            MemberCouponDto memberCouponDto = new MemberCouponDto(
-                    couponId,
-                    memberId,
-                    today.atStartOfDay(),
-                    lastDayOfMonth.atTime(23, 59, 59),
-                    false
-            );
-            memberCoupons.add(memberCouponDto);
-        }
-
-        memberCouponMapper.insertMemberCoupons(memberCoupons);
-
-
+        return couponId;
 
 
     }
