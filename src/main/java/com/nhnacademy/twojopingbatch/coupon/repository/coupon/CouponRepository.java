@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * CouponRepository
- *
  * 쿠폰 엔티티의 CRUD 및 추가적인 커스텀 조회 기능을 제공하는 JPA 리포지토리 인터페이스입니다.
  * Spring Data JPA의 JpaRepository를 상속하며, QueryDSL 기반의 커스텀 리포지토리인 CouponQuerydslRepository도 함께 상속합니다.
  *

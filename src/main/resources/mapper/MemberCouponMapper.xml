@@ -5,7 +5,7 @@
 <mapper namespace="com.nhnacademy.twojopingbatch.mybatis.mapper.MemberCouponMapper">
 
     <!-- 다수의 MemberCouponDto 데이터를 삽입 -->
-    <insert id="insertMemberCoupons" parameterType="list">
+    <insert id="bulkInsertMemberCoupons" parameterType="list">
         INSERT INTO member_coupon (coupon_id, customer_id, receive_time, invalid_time, is_used)
         VALUES
         <foreach collection="list" item="coupon" separator=",">

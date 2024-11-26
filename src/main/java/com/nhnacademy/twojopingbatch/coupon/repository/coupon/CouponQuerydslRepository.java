@@ -2,7 +2,6 @@ package com.nhnacademy.twojopingbatch.coupon.repository.coupon;
 
 /**
  * CouponQuerydslRepository
- *
  * 쿠폰 정보를 조회하는 QueryDSL 기반의 커스텀 리포지토리 인터페이스입니다.
  * 구현체에서 QueryDSL을 통해 특정 조건에 맞는 쿠폰 정보를 데이터베이스에서 조회하는 기능을 제공합니다.
  *

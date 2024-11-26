@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * QuerydslConfig
- *
  * 이 클래스는 QueryDSL 설정을 관리하는 구성 클래스입니다.
  * JPAQueryFactory 빈을 생성하여, QueryDSL을 통해 데이터베이스 질의를 수행할 수 있도록 지원합니다.
  *

@@ -8,7 +8,6 @@ import java.util.Optional;
 
 /**
  * CouponPolicyRepository
- *
  * 쿠폰 정책 엔티티의 CRUD 기능을 제공하는 JPA 리포지토리 인터페이스입니다.
  * 쿠폰 정책의 타입별 조회를 위한 추가 메서드를 정의하여 특정 정책을 가져오는 데 사용됩니다.
  *

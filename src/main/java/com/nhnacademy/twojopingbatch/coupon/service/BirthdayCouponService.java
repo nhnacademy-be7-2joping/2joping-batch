@@ -2,7 +2,6 @@ package com.nhnacademy.twojopingbatch.coupon.service;
 
 /**
  * BirthdayCouponService
- *
  * 매월 생일자에게 생일 쿠폰을 발급하는 서비스 인터페이스입니다.
  * 각 생일자에 대한 쿠폰 발급 로직을 구현하는 메서드를 정의합니다.
  *

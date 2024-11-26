@@ -1,55 +1,84 @@
 package com.nhnacademy.twojopingbatch.coupon.repository;
 
-import com.nhnacademy.twojopingbatch.coupon.entity.Coupon;
-import com.nhnacademy.twojopingbatch.coupon.repository.coupon.CouponRepository;
+import com.nhnacademy.twojopingbatch.coupon.entity.QCoupon;
 import com.nhnacademy.twojopingbatch.coupon.repository.coupon.impl.CouponRepositoryImpl;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-/**
- * CouponRepositoryImplTest
- *
- * 이 클래스는 CouponRepositoryImpl의 findIdByName 메서드를 테스트합니다.
- * 쿠폰이 데이터베이스에 올바르게 저장되고 조회되는지 확인하는 테스트입니다.
- *
- * @author Luha
- * @since 1.0
- */
-@SpringBootTest
 class CouponRepositoryImplTest {
 
-    @Autowired
+    private JPAQueryFactory queryFactory;
     private CouponRepositoryImpl couponRepository;
 
-    @Autowired
-    private CouponRepository couponJpaRepository;
+    @BeforeEach
+    void setUp() {
+        queryFactory = mock(JPAQueryFactory.class);
+        couponRepository = new CouponRepositoryImpl(queryFactory);
+    }
 
-    /**
-     * findIdByName 메서드 테스트.
-     *
-     * Given: 데이터베이스에 쿠폰을 저장.
-     * When: findIdByName 메서드를 사용하여 쿠폰 ID를 조회.
-     * Then: 저장한 쿠폰의 ID와 조회한 ID가 일치하는지 검증.
-     */
     @Test
-    @Transactional
     void testFindIdByName() {
-        // Given: 데이터 준비
-        Coupon coupon = new Coupon(null, "Test Coupon", LocalDate.now(), LocalDate.now().plusDays(10), 100, null);
-        couponJpaRepository.save(coupon);
+        // Given
+        String couponName = "Test Coupon";
+        Long expectedId = 1L;
 
-        // When: 쿼리 메서드 호출
-        Long couponId = couponRepository.findIdByName("Test Coupon");
+        // Mock QueryDSL 동작 설정
+        JPAQuery<Long> mockQuery = mock(JPAQuery.class);
+        when(queryFactory.select(QCoupon.coupon.id))
+                .thenReturn(mockQuery);
+        when(mockQuery.from(QCoupon.coupon))
+                .thenReturn(mockQuery);
+        when(mockQuery.where((Predicate) any()))
+                .thenReturn(mockQuery);
+        when(mockQuery.fetchOne())
+                .thenReturn(expectedId);
 
-        // Then: 결과 검증
-        assertNotNull(couponId);
-        assertEquals(coupon.getId(), couponId);
+        // When
+        Long result = couponRepository.findIdByName(couponName);
+
+        // Then
+        assertEquals(expectedId, result);
+
+        // Verify 호출 순서
+        verify(queryFactory).select(QCoupon.coupon.id);
+        verify(mockQuery).from(QCoupon.coupon);
+        verify(mockQuery).where(QCoupon.coupon.name.eq(couponName));
+        verify(mockQuery).fetchOne();
+    }
+
+    @Test
+    void testFindIdByName_NotFound() {
+        // Given
+        String couponName = "NonExisting Coupon";
+
+        // Mock QueryDSL 동작 설정
+        JPAQuery<Long> mockQuery = mock(JPAQuery.class);
+        when(queryFactory.select(QCoupon.coupon.id))
+                .thenReturn(mockQuery);
+        when(mockQuery.from(QCoupon.coupon))
+                .thenReturn(mockQuery);
+        when(mockQuery.where((Predicate) any()))
+                .thenReturn(mockQuery);
+        when(mockQuery.fetchOne())
+                .thenReturn(null);
+
+        // When
+        Long result = couponRepository.findIdByName(couponName);
+
+        // Then
+        assertNull(result);
+
+        // Verify 호출 순서
+        verify(queryFactory).select(QCoupon.coupon.id);
+        verify(mockQuery).from(QCoupon.coupon);
+        verify(mockQuery).where(QCoupon.coupon.name.eq(couponName));
+        verify(mockQuery).fetchOne();
     }
 }
