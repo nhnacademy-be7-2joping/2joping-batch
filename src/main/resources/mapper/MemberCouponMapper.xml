@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nhnacademy.twojopingbatch.mybatis.mapper.MemberCouponMapper">
+
+    <!-- 다수의 MemberCouponDto 데이터를 삽입 -->
+    <insert id="bulkInsertMemberCoupons" parameterType="list">
+        INSERT INTO member_coupon (coupon_id, customer_id, receive_time, invalid_time, is_used)
+        VALUES
+        <foreach collection="list" item="coupon" separator=",">
+            (#{coupon.couponId}, #{coupon.customerId}, #{coupon.receiveTime}, #{coupon.invalidTime}, #{coupon.isUsed})
+        </foreach>
+    </insert>
+</mapper>

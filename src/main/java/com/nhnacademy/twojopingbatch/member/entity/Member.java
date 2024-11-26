@@ -2,12 +2,14 @@ package com.nhnacademy.twojopingbatch.member.entity;
 
 
 
+import com.nhnacademy.twojopingbatch.coupon.entity.MemberCoupon;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Member 엔티티 클래스
@@ -19,21 +21,25 @@ import java.time.LocalDate;
  */
 @Entity
 @Table(name = "member")
+@PrimaryKeyJoinColumn(name = "customer_id")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member {
+public class Member extends Customer {
 
-        @Id
-        private Long customerId;
 
         private LocalDate birthday;
 
         private LocalDate joinDate;
+        private Integer birthdayMonth; // 추가된 컬럼 매핑
 
         private Integer accPurchase;
 
         @ManyToOne
         @JoinColumn(name = "member_tier_id")
         private MemberTier memberTier;
+
+
+        @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+        private List<MemberCoupon> memberCoupons;
 }

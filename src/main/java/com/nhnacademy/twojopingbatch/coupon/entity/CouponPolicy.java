@@ -1,5 +1,6 @@
 package com.nhnacademy.twojopingbatch.coupon.entity;
 
+import com.nhnacademy.twojopingbatch.coupon.enums.CouponPolicyType;
 import com.nhnacademy.twojopingbatch.coupon.enums.DiscountType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -43,5 +44,9 @@ public class CouponPolicy {
         private Integer maxDiscount;
 
         private Boolean isActive;
+
+        @Enumerated(EnumType.STRING)
+        private CouponPolicyType type;
+
 
 }
