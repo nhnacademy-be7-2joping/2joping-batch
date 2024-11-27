@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
@@ -40,5 +41,8 @@ public class Coupon {
 
         @ManyToOne
         @JoinColumn(name = "coupon_policy_id", referencedColumnName = "coupon_policy_id")
+        @Setter
         private CouponPolicy couponPolicy;
+
+
 }
