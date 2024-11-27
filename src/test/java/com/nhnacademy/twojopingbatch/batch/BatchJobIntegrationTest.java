@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
     private EntityManagerFactory entityManagerFactory;
 
     private static final long TEST_COUPON_ID = 397; // 테스트용 쿠폰 ID
-    private static final int JANUARY_MEMBER_COUNT = 3348; // 1월 생일자 수
+    private static final int JANUARY_MEMBER_COUNT = 3349; // 1월 생일자 수
     private static final int BIRTHDAY_MONTH = 11;
 
     @Test
